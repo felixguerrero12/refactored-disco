@@ -1,0 +1,33 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="19">
+            <item index="0" class="java.lang.String" itemvalue="fireeyepy" />
+            <item index="1" class="java.lang.String" itemvalue="cassandra-driver" />
+            <item index="2" class="java.lang.String" itemvalue="aiokafka" />
+            <item index="3" class="java.lang.String" itemvalue="google-auth-oauthlib" />
+            <item index="4" class="java.lang.String" itemvalue="splunk-sdk" />
+            <item index="5" class="java.lang.String" itemvalue="azure-kusto-ingest" />
+            <item index="6" class="java.lang.String" itemvalue="azure-monitor-query" />
+            <item index="7" class="java.lang.String" itemvalue="black" />
+            <item index="8" class="java.lang.String" itemvalue="azure-kusto-data" />
+            <item index="9" class="java.lang.String" itemvalue="kafka-python" />
+            <item index="10" class="java.lang.String" itemvalue="pandas" />
+            <item index="11" class="java.lang.String" itemvalue="cybereason" />
+            <item index="12" class="java.lang.String" itemvalue="azure-mgmt-security" />
+            <item index="13" class="java.lang.String" itemvalue="faker" />
+            <item index="14" class="java.lang.String" itemvalue="google-auth-httplib2" />
+            <item index="15" class="java.lang.String" itemvalue="google-api-python-client" />
+            <item index="16" class="java.lang.String" itemvalue="sumologic-sdk" />
+            <item index="17" class="java.lang.String" itemvalue="duo-client" />
+            <item index="18" class="java.lang.String" itemvalue="shodan" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
