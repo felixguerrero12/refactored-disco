@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <title>CSV Interaction App</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <h2>Upload CSV File</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <input type="file" class="form-control-file" name="file" required>
+                <button type="submit" class="btn btn-primary mt-2">Upload</button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <select name="eventCode" id="eventCode" class="form-select mt-2" aria-label="Event Code">
+                <option value="" selected>Choose an Event Code</option>
+                {% for code in event_codes %}
+                <option value="{{ code }}">{{ code }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select name="field" id="field" class="form-select mt-2" aria-label="Field">
+                <option value="" selected>Choose a Field</option>
+                {% for field in fields %}
+                <option value="{{ field }}">{{ field }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <input type="text" id="search-bar" class="form-control" placeholder="Search...">
+        </div>
+    </div>
+
+    <div id="output" class="alert alert-info" style="display: none;"></div>
+
+
+    <div class="row mt-3">
+        <div class="col-md-12">
+            {% if data %}
+            <table id="data-table" class="display">
+                <thead>
+                    <tr>
+                        {% for col in columns %}
+                        <th>{{ col.title }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data %}
+                    <tr>
+                        {% for col in columns %}
+                        <td>{{ row[col.title] }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<!-- Optional JavaScript; choose one of the two! -->
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#data-table').DataTable({
+            scrollY: '50vh',
+            scrollCollapse: true,
+            paging: false,
+            dom: 'lrtip'
+        });
+
+    // Function to update the output
+    function updateOutput(selectedItem, associatedItems) {
+        // Display the selected item and associated items above the table
+        var formattedAssociatedItems = associatedItems.join(', '); // Join the elements with a comma and space
+        $('#output').html(`Selected: ${selectedItem}<br>Associated Items: ${formattedAssociatedItems}`).show();
+    }
+
+    $('#eventCode').on('change', function () {
+        var selectedEventCode = $(this).val();
+        table.column(0).search(selectedEventCode).draw();
+        $.post('/get_associated_fields', { eventCode: selectedEventCode }, function (data) {
+            updateOutput(selectedEventCode, data);
+        });
+    });
+
+    $('#field').on('change', function () {
+        var field = $(this).val();
+        table.column(1).search(field).draw();
+        $.post('/get_associated_event_codes', { field: field }, function (data) {
+            updateOutput(field, data);
+        });
+    });
+
+        // Hook up your search bar to DataTables search
+        $('#search-bar').on('input', function () {
+            var searchTerm = $(this).val();
+            table.search(searchTerm).draw();
+        });
+
+        // Clear filters if CSV is cleared
+        $('#clear-csv').on('click', function () {
+            table.search('').columns().search('').draw();
+        });
+    });
+</script>
+
+
+</body>
+</html>
